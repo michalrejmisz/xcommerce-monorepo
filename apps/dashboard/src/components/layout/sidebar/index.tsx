@@ -33,11 +33,11 @@ export const Sidebar = () => {
             </Link>
           ))}
           <Link
-            href="#"
+            href="/product-categories"
             className="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
           >
             {/* <Home className="h-4 w-4" /> */}
-            Dashboard
+            Product Categories
           </Link>
           <Link
             href="colors"

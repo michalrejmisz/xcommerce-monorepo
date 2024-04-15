@@ -18,6 +18,57 @@ model Post {
   updateAt  DateTime @updatedAt
 }
 
+model ProductCategory {
+  id                           Int                            @id @default(autoincrement())
+  name                         String
+  parentId                     Int?
+  children                     ProductCategory[]              @relation("ProductCategoryToProductCategory")
+  parent                       ProductCategory?               @relation("ProductCategoryToProductCategory", fields: [parentId], references: [id])
+  products                     Product[]
+  ProductSpecificationTemplate ProductSpecificationTemplate[]
+  path       String                         @default("") // Field to store the category path
+  level      Int                            @default(0)  // Field to indicate the level of the category in the hierarchy
+
+  @@map("product_categories")
+}
+
+model Product {
+  id             Int                    @id @default(autoincrement())
+  name           String
+  categoryId     Int
+  description    String?
+  price          Float
+  imageUrl       String?
+  specifications ProductSpecification[]
+
+  category ProductCategory @relation(fields: [categoryId], references: [id])
+
+  @@map("products")
+}
+
+model ProductSpecificationTemplate {
+  id             Int                    @id @default(autoincrement())
+  categoryId     Int
+  key            String // e.g., "Print Speed"
+  category       ProductCategory        @relation(fields: [categoryId], references: [id])
+  specifications ProductSpecification[]
+
+  @@map("product_specification_templates")
+}
+
+model ProductSpecification {
+  id                      Int    @id @default(autoincrement())
+  productId               Int
+  specificationTemplateId Int
+  value                   String // e.g., "20 PPM"
+
+  product               Product                      @relation(fields: [productId], references: [id])
+  specificationTemplate ProductSpecificationTemplate @relation(fields: [specificationTemplateId], references: [id])
+
+  @@map("product_specifications")
+}
+
+
 // NextAuth.js Models
 model Account {
   id                String  @id @default(uuid())
@@ -63,3 +114,4 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+

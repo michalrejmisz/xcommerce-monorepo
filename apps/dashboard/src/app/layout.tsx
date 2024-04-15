@@ -39,7 +39,9 @@ export default function RootLayout({
             <Sidebar />
             <div className="flex flex-1 flex-col">
               <Header />
-              <main className="bg-background flex-1">{children}</main>
+              <main className="bg-background flex-1 overflow-auto p-8">
+                {children}
+              </main>
             </div>
           </div>
         </TRPCReactProvider>
