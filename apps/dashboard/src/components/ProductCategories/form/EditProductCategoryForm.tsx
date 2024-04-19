@@ -1,18 +1,38 @@
-import React, { useEffect } from "react";
-import { FormButton, FormContainer, FormInput } from "@/admin/components/form";
-import { Modal } from "@/common/components/UI/Modal";
-import { useModal } from "@/common/hooks/useModal";
-import { ProductCategory } from "@/types/global";
+"use client";
+
+import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
+
+import { ProductCategory } from "@acme/db";
+
+import { Button } from "~/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "~/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "~/components/ui/form";
+import { Input } from "~/components/ui/input";
 
 type EditCategoryProps = {
   category: ProductCategory;
   onSave: (category: ProductCategory) => void;
 };
 
-const schema = z.object({
+const ProductCategorySchema = z.object({
   id: z.number(),
   name: z.string().min(1, "Nazwa jest wymagana"),
   parentId: z.number().nullable(),
@@ -20,13 +40,12 @@ const schema = z.object({
   level: z.number(),
 });
 
-export const EditCategoryForm: React.FC<EditCategoryProps> = ({
+const EditProductCategoryForm: React.FC<EditCategoryProps> = ({
   category,
   onSave,
 }) => {
-  const { isVisible, openModal, closeModal } = useModal();
   const methods = useForm<ProductCategory>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(ProductCategorySchema),
     defaultValues: {
       id: category.id,
       name: category.name,
@@ -36,35 +55,74 @@ export const EditCategoryForm: React.FC<EditCategoryProps> = ({
     },
   });
 
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors: CreateCategoryProps },
+  } = methods;
+
+  const [isOpen, setIsOpen] = useState(false);
+
   const handleClose = () => {
-    closeModal();
-    methods.reset();
+    reset();
+    setIsOpen(false);
   };
 
-  const onSubmit: SubmitHandler<ProductCategory> = (data) => {
-    console.log(data);
+  const handleOpen = () => setIsOpen(true);
+
+  const handleFormSubmit: SubmitHandler<ProductCategory> = (data) => {
     onSave(data);
-    handleClose();
+    reset();
+    setIsOpen(false);
   };
 
   return (
-    <>
-      <button onClick={openModal} className="font-bold text-white">
-        Edytuj
-      </button>
-      <Modal isVisible={isVisible} onClose={handleClose}>
+    <Dialog open={isOpen}>
+      <DialogTrigger asChild>
+        <Button variant="ghost" size="sm" onClick={handleOpen}>
+          Edytuj
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]" onOverlayClick={handleClose}>
+        <DialogHeader>
+          <DialogTitle>Edytuj kategorię</DialogTitle>
+          <DialogDescription>Wprowadź nazwę kategorii</DialogDescription>
+        </DialogHeader>
         <FormProvider {...methods}>
-          <FormContainer
-            onSubmit={methods.handleSubmit(onSubmit)}
-            className="flex flex-col space-y-2 p-3"
-          >
-            <FormInput name="name" label="Nazwa" />
-            <FormButton type="submit" className="self-end">
-              Zapisz
-            </FormButton>
-          </FormContainer>
+          <Form {...methods}>
+            <form
+              onSubmit={methods.handleSubmit(handleFormSubmit)}
+              className="space-y-8"
+            >
+              <FormField
+                control={methods.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input placeholder="Laptop" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <DialogFooter>
+                <Button
+                  variant="outline"
+                  className="bg-secondary mr-1"
+                  onClick={handleClose}
+                >
+                  Zamknij
+                </Button>
+                <Button type="submit">Dodaj</Button>
+              </DialogFooter>
+            </form>
+          </Form>
         </FormProvider>
-      </Modal>
-    </>
+      </DialogContent>
+    </Dialog>
   );
 };
+
+export default EditProductCategoryForm;

@@ -1,5 +1,11 @@
+import { clsx } from "clsx";
+
 import { ProductCategory } from "@acme/db";
 
+import {
+  DeleteProductCategoryForm,
+  EditProductCategoryForm,
+} from "~/components/ProductCategories";
 import {
   Card,
   CardContent,
@@ -8,6 +14,7 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
+import { cn } from "~/lib/utils";
 
 type ProductCategoryItemProps = {
   category: ProductCategory;
@@ -18,7 +25,7 @@ type ProductCategoryItemProps = {
   onUpdateCategory?: (category: ProductCategory) => void;
 };
 
-export const ProductCategoryItem: React.FC<ProductCategoryItemProps> = ({
+const ProductCategoryItem: React.FC<ProductCategoryItemProps> = ({
   category,
   isSelected,
   isDeletable,
@@ -26,18 +33,31 @@ export const ProductCategoryItem: React.FC<ProductCategoryItemProps> = ({
   onDeleteCategory,
   onUpdateCategory,
 }) => {
+  console.log("isSelected", category.name, isSelected);
   return (
-    <Card className="w-36 p-3">
-      <CardHeader>
-        <CardTitle>{category.name}</CardTitle>
-      </CardHeader>
-      <CardContent>{/* <Text>{category.path}</Text> */}</CardContent>
-      <CardFooter>
-        {/* <ButtonGroup>
-          <Button>Edit</Button>
-          <DeleteCategoryButton categoryId={category.id} onDelete={onDelete} />
-        </ButtonGroup> */}
+    <Card
+      className={cn(
+        clsx("bg-background/70 m-2 h-auto w-40 p-3", {
+          "bg-secondary/70": isSelected,
+        }),
+      )}
+      onClick={() => onSelectCategory(category)}
+    >
+      <CardDescription className="text-md">{category.name}</CardDescription>
+      <CardFooter className="justify-end p-0">
+        {isDeletable && (
+          <DeleteProductCategoryForm
+            categoryId={category.id}
+            onDelete={onDeleteCategory}
+          />
+        )}
+        <EditProductCategoryForm
+          category={category}
+          onSave={onUpdateCategory}
+        />
       </CardFooter>
     </Card>
   );
 };
+
+export default ProductCategoryItem;

@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import { ProductCategory } from "@acme/db";
 
-import { ProductCategoryItem } from "./ProductCategoryItem";
+import ProductCategoryItem from "./ProductCategoryItem";
 
 type CategoryListProps = {
   categories: ProductCategory[] | null;
@@ -15,7 +15,7 @@ type CategoryListProps = {
   onUpdateCategory?: (category: ProductCategory) => void;
 };
 
-const CategoryList: React.FC<CategoryListProps> = ({
+const ProductCategoryList: React.FC<CategoryListProps> = ({
   categories,
   selectedCategory,
   isDeletable,
@@ -29,11 +29,11 @@ const CategoryList: React.FC<CategoryListProps> = ({
         <li key={category.id}>
           <ProductCategoryItem
             category={category}
-            // onSelectCategory={onSelectCategory}
-            // onDeleteCategory={onDeleteCategory}
-            // onUpdateCategory={onUpdateCategory}
-            // isSelected={selectedCategory?.id === category.id}
-            // isDeletable={isDeletable}
+            onSelectCategory={onSelectCategory}
+            onDeleteCategory={onDeleteCategory}
+            onUpdateCategory={onUpdateCategory}
+            isSelected={selectedCategory?.id === category.id}
+            isDeletable={isDeletable}
           />
         </li>
       ))}
@@ -41,4 +41,4 @@ const CategoryList: React.FC<CategoryListProps> = ({
   );
 };
 
-export default CategoryList;
+export default ProductCategoryList;

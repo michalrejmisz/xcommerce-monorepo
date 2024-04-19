@@ -14,7 +14,7 @@ export const Sidebar = () => {
   ];
 
   return (
-    <div className="bg-muted/95 bg-red border-opacity-1 border-border w-64 border-2 border-b">
+    <div className="bg-background/70 border-opacity-1 border-border w-64 border-2 border-b bg-blend-color-burn">
       <Link
         href="/"
         className="text-primary mb-5 flex h-16 items-center justify-between px-4 py-2"

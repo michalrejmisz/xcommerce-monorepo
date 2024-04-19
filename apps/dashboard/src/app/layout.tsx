@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "~/styles/globals.css";
 
 import { headers } from "next/headers";
+import Image from "next/image";
 
 import { Header } from "../components/layout/header";
 import { Sidebar } from "../components/layout/sidebar";
@@ -34,14 +35,20 @@ export default function RootLayout({
   return (
     <html lang="pl">
       <body>
+        <Image
+          src="/images/bg-dashboard.webp"
+          layout="fill"
+          objectFit="cover"
+          quality={100}
+          alt="Dashboard Background"
+          className="h-100vh relative z-[-1] w-full blur-[10px]"
+        />
         <TRPCReactProvider headers={headers()}>
-          <div className="flex h-screen overflow-hidden bg-gray-100">
+          <div className="flex h-screen overflow-hidden">
             <Sidebar />
             <div className="flex flex-1 flex-col">
               <Header />
-              <main className="bg-background flex-1 overflow-auto p-8">
-                {children}
-              </main>
+              <main className="flex-1 overflow-auto p-8">{children}</main>
             </div>
           </div>
         </TRPCReactProvider>
