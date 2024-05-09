@@ -34,6 +34,7 @@ const ProductCategoryItem: React.FC<ProductCategoryItemProps> = ({
   onUpdateCategory,
 }) => {
   console.log("isSelected", category.name, isSelected);
+  console.log("Category name", category.name, "isLeaf", category.isLeaf);
   return (
     <Card
       className={cn(
@@ -43,7 +44,7 @@ const ProductCategoryItem: React.FC<ProductCategoryItemProps> = ({
       )}
       onClick={() => onSelectCategory(category)}
     >
-      <CardDescription className="text-md">{category.name}</CardDescription>
+      <CardDescription className="text-">{category.name}</CardDescription>
       <CardFooter className="justify-end p-0">
         {isDeletable && (
           <DeleteProductCategoryForm
@@ -51,6 +52,7 @@ const ProductCategoryItem: React.FC<ProductCategoryItemProps> = ({
             onDelete={onDeleteCategory}
           />
         )}
+
         <EditProductCategoryForm
           category={category}
           onSave={onUpdateCategory}

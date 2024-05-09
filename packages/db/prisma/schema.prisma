@@ -18,57 +18,6 @@ model Post {
   updateAt  DateTime @updatedAt
 }
 
-model ProductCategory {
-  id                           Int                            @id @default(autoincrement())
-  name                         String
-  parentId                     Int?
-  children                     ProductCategory[]              @relation("ProductCategoryToProductCategory")
-  parent                       ProductCategory?               @relation("ProductCategoryToProductCategory", fields: [parentId], references: [id])
-  products                     Product[]
-  ProductSpecificationTemplate ProductSpecificationTemplate[]
-  path       String                         @default("") // Field to store the category path
-  level      Int                            @default(0)  // Field to indicate the level of the category in the hierarchy
-
-  @@map("product_categories")
-}
-
-model Product {
-  id             Int                    @id @default(autoincrement())
-  name           String
-  categoryId     Int
-  description    String?
-  price          Float
-  imageUrl       String?
-  specifications ProductSpecification[]
-
-  category ProductCategory @relation(fields: [categoryId], references: [id])
-
-  @@map("products")
-}
-
-model ProductSpecificationTemplate {
-  id             Int                    @id @default(autoincrement())
-  categoryId     Int
-  key            String // e.g., "Print Speed"
-  category       ProductCategory        @relation(fields: [categoryId], references: [id])
-  specifications ProductSpecification[]
-
-  @@map("product_specification_templates")
-}
-
-model ProductSpecification {
-  id                      Int    @id @default(autoincrement())
-  productId               Int
-  specificationTemplateId Int
-  value                   String // e.g., "20 PPM"
-
-  product               Product                      @relation(fields: [productId], references: [id])
-  specificationTemplate ProductSpecificationTemplate @relation(fields: [specificationTemplateId], references: [id])
-
-  @@map("product_specifications")
-}
-
-
 // NextAuth.js Models
 model Account {
   id                String  @id @default(uuid())
@@ -115,3 +64,89 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+model ProductCategory {
+  id                           Int                            @id @default(autoincrement())
+  name                         String
+  parentId                     Int?
+  children                     ProductCategory[]              @relation("ProductCategoryToProductCategory")
+  parent                       ProductCategory?               @relation("ProductCategoryToProductCategory", fields: [parentId], references: [id])
+  products                     Product[]
+  specificationTemplateGroups  SpecificationTemplateGroup[]
+  path                         String                         @default("") // Field to store the category path
+  level                        Int                            @default(0)  // Field to indicate the level of the category in the hierarchy
+  isLeaf                       Boolean                        @default(false)
+  @@map("product_categories")
+}
+
+model Product {
+  id                           Int                            @id @default(autoincrement())
+  name                         String
+  categoryId                   Int
+  description                  String?
+  price                        Float
+  imageUrl                     String?
+  specifications               ProductSpecification[]
+  templates                    ProductToTemplate[]            // Relation through join table
+  category                     ProductCategory                @relation(fields: [categoryId], references: [id])
+
+  @@map("products")
+}
+
+
+model SpecificationTemplateGroup {
+  id                           Int                            @id @default(autoincrement())
+  name                         String
+  description                  String?
+  categoryId                   Int?                           // Optional, if null, the group is global
+  isGlobal                     Boolean                        // Determines if the group is global
+  templates                    ProductSpecificationTemplate[]
+  category                     ProductCategory?               @relation(fields: [categoryId], references: [id])
+
+  @@map("specification_template_groups")
+}
+
+model ProductSpecificationTemplate {
+  id                           Int                            @id @default(autoincrement())
+  groupId                      Int?                           // Optional, foreign key to group
+  key                          String
+  description                  String?
+  specifications               ProductSpecification[]
+  options                      SpecificationOption[]
+  group                        SpecificationTemplateGroup?    @relation(fields: [groupId], references: [id])
+  products                     ProductToTemplate[]            // Relation through join table
+
+  @@map("product_specification_templates")
+}
+
+model SpecificationOption {
+  id                           Int                            @id @default(autoincrement())
+  specificationTemplateId      Int
+  value                        String
+  specificationTemplate        ProductSpecificationTemplate   @relation(fields: [specificationTemplateId], references: [id])
+  productSpecifications        ProductSpecification[]
+  isMultipleChoice             Boolean                        @default(false)
+  @@map("specification_options")
+}
+
+model ProductSpecification {
+  id                           Int                            @id @default(autoincrement())
+  productId                    Int
+  specificationTemplateId      Int
+  specificationOptionId        Int?                           // Optional, references SpecificationOption
+  value                        String?                        // Optional, for free-form values if no option selected
+  product                      Product                        @relation(fields: [productId], references: [id])
+  specificationTemplate        ProductSpecificationTemplate   @relation(fields: [specificationTemplateId], references: [id])
+  specificationOption          SpecificationOption?           @relation(fields: [specificationOptionId], references: [id])
+
+  @@map("product_specifications")
+}
+
+model ProductToTemplate {
+  productId                    Int
+  templateId                   Int
+  product                      Product                        @relation(fields: [productId], references: [id])
+  template                     ProductSpecificationTemplate   @relation(fields: [templateId], references: [id])
+
+  @@id([productId, templateId])
+  @@map("product_to_template")
+}

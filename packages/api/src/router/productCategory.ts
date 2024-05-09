@@ -7,13 +7,6 @@ export const productCategory = createTRPCRouter({
     return ctx.prisma.productCategory.findMany();
   }),
 
-
-//   byId: publicProcedure
-//     .input(z.object({ id: z.string() }))
-//     .query(({ ctx, input }) => {
-//       return ctx.prisma.post.findFirst({ where: { id: input.id } });
-//     }),
-
   add: publicProcedure
         .input(z.object({
         name: z.string().min(1),
@@ -21,8 +14,15 @@ export const productCategory = createTRPCRouter({
         path: z.string(),  
         level: z.number(),
       }))
-      .mutation(({ ctx, input }) => {
-        return ctx.prisma.productCategory.create({ data: input });
+      .mutation(async ({ ctx, input }) => {
+        const category = await ctx.prisma.productCategory.create({ data: { ...input, isLeaf: true } });
+        if (input.parentId !== null) {
+           await ctx.prisma.productCategory.update({
+            where: { id: input.parentId },
+            data: { isLeaf: false }
+          });
+        }
+        return category;
       }),
 
   update: publicProcedure
@@ -33,11 +33,52 @@ export const productCategory = createTRPCRouter({
     path: z.string(),  
     level: z.number(),
   }))
-  .mutation(({ ctx, input }) => {
-    return ctx.prisma.productCategory.update({ where: { id: input.id }, data: input });
+  .mutation(async ({ ctx, input }) => {
+    // return ctx.prisma.productCategory.update({ where: { id: input.id }, data: input });
+    const existingCategory = await ctx.prisma.productCategory.findUnique({ where: { id: input.id } });
+    const updatedCategory = await ctx.prisma.productCategory.update({
+      where: { id: input.id },
+      data: input
+    });
+
+    if (existingCategory?.parentId !== input.parentId) {
+      if (existingCategory?.parentId !== null) {
+        const siblingCount = await ctx.prisma.productCategory.count({
+          where: { parentId: existingCategory?.parentId }
+        });
+        if (siblingCount === 0) {
+          await ctx.prisma.productCategory.update({
+            where: { id: existingCategory?.parentId },
+            data: { isLeaf: true }
+          });
+        }
+      }
+      if (input.parentId !== null) {
+        await ctx.prisma.productCategory.update({
+          where: { id: input.parentId },
+          data: { isLeaf: false }
+        });
+      }
+    }
+
+    return updatedCategory;
   }),    
 
-  delete: publicProcedure.input(z.number()).mutation(({ ctx, input }) => {
-    return ctx.prisma.productCategory.delete({ where: { id: input } });
+  delete: publicProcedure.input(z.number()).mutation(async({ ctx, input }) => {
+    // return ctx.prisma.productCategory.delete({ where: { id: input } });
+    const category = await ctx.prisma.productCategory.findUnique({ where: { id: input } });
+    await ctx.prisma.productCategory.delete({ where: { id: input } });
+  
+    if (category?.parentId !== null) {
+      const siblingCount = await ctx.prisma.productCategory.count({
+        where: { parentId: category?.parentId }
+      });
+      if (siblingCount === 0) {
+        await ctx.prisma.productCategory.update({
+          where: { id: category?.parentId },
+          data: { isLeaf: true }
+        });
+      }
+    }
   }),
 });

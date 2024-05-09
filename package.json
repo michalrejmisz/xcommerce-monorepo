@@ -26,7 +26,8 @@
     "@turbo/gen": "^1.10.15",
     "prettier": "^3.0.3",
     "turbo": "^1.10.15",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "uuid": "^9.0.1"
   },
   "prettier": "@acme/prettier-config"
 }

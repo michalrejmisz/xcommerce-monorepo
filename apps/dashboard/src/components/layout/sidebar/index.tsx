@@ -63,11 +63,11 @@ export const Sidebar = () => {
             Customers
           </Link>
           <Link
-            href="#"
+            href="/product-specifications"
             className="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
           >
             {/* <LineChart className="h-4 w-4" /> */}
-            Analytics
+            Product Specification
           </Link>
         </nav>
       </div>
