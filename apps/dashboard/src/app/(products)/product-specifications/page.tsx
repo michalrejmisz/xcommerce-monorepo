@@ -48,6 +48,7 @@ export default function ProductSpecificaitonsPage() {
                   const selected = isCategorySelected(category);
                   return (
                     <Card
+                      key={category.id}
                       className={cn(
                         "mb-3 mr-3 inline-flex justify-between p-3",
                         {

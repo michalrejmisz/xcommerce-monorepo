@@ -16,17 +16,17 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@prisma/client": "^5.4.2"
+    "@prisma/client": "^5.13.0"
   },
   "devDependencies": {
     "@acme/eslint-config": "^0.2.0",
     "@acme/prettier-config": "^0.1.0",
     "@acme/tsconfig": "^0.1.0",
-    "dotenv-cli": "^7.3.0",
-    "eslint": "^8.50.0",
-    "prettier": "^3.0.3",
-    "prisma": "^5.4.2",
-    "typescript": "^5.2.2"
+    "dotenv-cli": "^7.4.2",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
+    "prisma": "^5.13.0",
+    "typescript": "^5.4.5"
   },
   "eslintConfig": {
     "root": true,

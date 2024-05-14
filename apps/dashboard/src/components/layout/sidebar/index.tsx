@@ -2,14 +2,36 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+import { cn } from "~/lib/utils";
 
 export const Sidebar = () => {
+  const pathname = usePathname();
   const menuItems = [
     {
       icon: "Test",
       text: "Kategorie",
       notification: 0,
-      link: "/categories",
+      link: "/product-categories",
+    },
+    {
+      icon: "Test",
+      text: "Kolory",
+      notification: 0,
+      link: "/colors",
+    },
+    {
+      icon: "Test",
+      text: "Produkty",
+      notification: 0,
+      link: "/products",
+    },
+    {
+      icon: "Test",
+      text: "Specyfikacja",
+      notification: 0,
+      link: "/product-specifications",
     },
   ];
 
@@ -27,48 +49,14 @@ export const Sidebar = () => {
             <Link
               key={index}
               href={link}
-              className="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
+              className={cn(
+                "text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all",
+                { "bg-muted text-primary": pathname === link },
+              )}
             >
               {text}
             </Link>
           ))}
-          <Link
-            href="/product-categories"
-            className="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
-          >
-            {/* <Home className="h-4 w-4" /> */}
-            Product Categories
-          </Link>
-          <Link
-            href="colors"
-            className="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
-          >
-            {/* <ShoppingCart className="h-4 w-4" /> */}
-            Colors
-            {/* <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full"> */}
-            6{/* </Badge> */}
-          </Link>
-          <Link
-            href="#"
-            className="bg-muted text-primary hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
-          >
-            {/* <Package className="h-4 w-4" /> */}
-            Products
-          </Link>
-          <Link
-            href="#"
-            className="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
-          >
-            {/* <Users className="h-4 w-4" /> */}
-            Customers
-          </Link>
-          <Link
-            href="/product-specifications"
-            className="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
-          >
-            {/* <LineChart className="h-4 w-4" /> */}
-            Product Specification
-          </Link>
         </nav>
       </div>
     </div>

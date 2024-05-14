@@ -5,8 +5,9 @@
   "type": "module",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./src/index.ts"
+      "import": "./index.ts",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     }
   },
   "license": "MIT",
