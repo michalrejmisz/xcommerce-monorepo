@@ -7,4 +7,11 @@ cloudinary.config({
   secure: true // Use HTTPS for URL and images
 });
 
+
+export async function uploadToCloudinary(fileStr: string, folder?: string) {
+  return cloudinary.uploader.upload(fileStr, {
+    folder: 'product_images'
+  });
+}
+
 export default cloudinary;

@@ -1,10 +1,12 @@
 {
-  "name": "@acme/api",
-  "version": "0.1.0",
+  "name": "@acme/utils",
+  "version": "1.0.0",
   "private": true,
+  "description": "Utility functions for the project",
   "main": "./index.ts",
-  "types": "./index.ts",
-  "license": "MIT",
+  "exports": {
+    ".": "./index.ts"
+  },
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "lint": "eslint .",
@@ -12,14 +14,10 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@acme/auth": "^0.1.0",
     "@acme/validators": "^0.1.0",
     "@acme/db": "^0.1.0",
-    "@acme/utils": "workspace:*",
     "@trpc/client": "^10.40.0",
-    "@trpc/server": "^10.40.0",
-    "superjson": "1.13.1",
-    "zod": "^3.22.2"
+    "@trpc/server": "^10.40.0"
   },
   "devDependencies": {
     "@acme/eslint-config": "^0.2.0",
@@ -29,11 +27,9 @@
     "prettier": "^3.0.3",
     "typescript": "^5.2.2"
   },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "@acme/eslint-config/base"
-    ]
+  "peerDependencies": {},
+  "publishConfig": {
+    "access": "public"
   },
   "prettier": "@acme/prettier-config"
 }

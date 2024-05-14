@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { uploadToCloudinary } from "@acme/utils";
 import { Product, ProductSchema } from "@acme/validators";
 
 import { Button } from "~/components/ui/button";

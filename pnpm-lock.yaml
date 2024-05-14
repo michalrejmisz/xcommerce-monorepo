@@ -41,6 +41,9 @@ importers:
       '@acme/db':
         specifier: ^0.1.0
         version: link:../../packages/db
+      '@acme/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
       '@acme/validators':
         specifier: ^0.1.0
         version: link:../../packages/validators
@@ -98,9 +101,6 @@ importers:
       next:
         specifier: ^13.5.4
         version: 13.5.4(react-dom@18.2.0)(react@18.2.0)
-      next-cloudinary:
-        specifier: ^6.5.2
-        version: 6.5.2(next@13.5.4)(react@18.2.0)
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -256,6 +256,9 @@ importers:
       '@acme/db':
         specifier: ^0.1.0
         version: link:../db
+      '@acme/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@acme/validators':
         specifier: ^0.1.0
         version: link:../validators
@@ -369,6 +372,40 @@ importers:
         version: 5.13.0
       typescript:
         specifier: ^5.4.5
+        version: 5.4.5
+
+  packages/utils:
+    dependencies:
+      '@acme/db':
+        specifier: ^0.1.0
+        version: link:../db
+      '@acme/validators':
+        specifier: ^0.1.0
+        version: link:../validators
+      '@trpc/client':
+        specifier: ^10.40.0
+        version: 10.40.0(@trpc/server@10.40.0)
+      '@trpc/server':
+        specifier: ^10.40.0
+        version: 10.40.0
+    devDependencies:
+      '@acme/eslint-config':
+        specifier: ^0.2.0
+        version: link:../../tooling/eslint
+      '@acme/prettier-config':
+        specifier: ^0.1.0
+        version: link:../../tooling/prettier
+      '@acme/tsconfig':
+        specifier: ^0.1.0
+        version: link:../../tooling/typescript
+      eslint:
+        specifier: ^8.50.0
+        version: 8.57.0
+      prettier:
+        specifier: ^3.0.3
+        version: 3.2.5
+      typescript:
+        specifier: ^5.2.2
         version: 5.4.5
 
   packages/validators:
@@ -872,34 +909,6 @@ packages:
       '@babel/helper-string-parser': 7.22.5
       '@babel/helper-validator-identifier': 7.22.20
       to-fast-properties: 2.0.0
-    dev: false
-
-  /@cloudinary-util/types@1.0.3:
-    resolution: {integrity: sha512-j7TcghSVC7Hwu6yijumWjImnWD7T1HPDsdE4eaaP4ykOUUuZoBg1ErAg6T89RHG9uR7lZGa++QwYAZxIvos9SA==}
-    dev: false
-
-  /@cloudinary-util/url-loader@5.2.2:
-    resolution: {integrity: sha512-gwoBuyoJBriUvmX3jk6Q1k5NdziloEhIp/4InLB6yBNe88K7bVbR/V8dJRhba0ZvlYDOOPjIiJLAa5J7xAnUlw==}
-    dependencies:
-      '@cloudinary-util/util': 3.0.0
-      '@cloudinary/url-gen': 1.15.0
-      zod: 3.23.8
-    dev: false
-
-  /@cloudinary-util/util@3.0.0:
-    resolution: {integrity: sha512-o6cJsN49OIelLcSkqUf4WzgefpePDFsAaeQfJbpcKhVdtvmWv71K0oZwMXuX62IY1OolqIg0etMiHtWZPhvPNA==}
-    dev: false
-
-  /@cloudinary/transformation-builder-sdk@1.13.3:
-    resolution: {integrity: sha512-tBMpjcwBjUgINGm2lKodb1fe32yBeq2KTSD7TrrFPm2/dQOb7lKmVuDaDe89IPcV+QZbb1JY/ZWL9pZjUV4aKw==}
-    dependencies:
-      '@cloudinary/url-gen': 1.15.0
-    dev: false
-
-  /@cloudinary/url-gen@1.15.0:
-    resolution: {integrity: sha512-bjU67eZxLUgoRy/Plli4TQio7q6P31OYqnEgXxeN9TKXrzr6h0DeEdIUhKI9gy3HkEBWXWWJIPh7j7gkOJPnyA==}
-    dependencies:
-      '@cloudinary/transformation-builder-sdk': 1.13.3
     dev: false
 
   /@cspotcode/source-map-support@0.8.1:
@@ -1781,10 +1790,6 @@ packages:
 
   /@tsconfig/node16@1.0.4:
     resolution: {integrity: sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==}
-    dev: false
-
-  /@tsconfig/recommended@1.0.6:
-    resolution: {integrity: sha512-0IKu9GHYF1NGTJiYgfWwqnOQSlnE9V9R7YohHNNf0/fj/SyOZWzdd06JFr0fLpg1Mqw0kGbYg8w5xdkSqLKM9g==}
     dev: false
 
   /@turbo/gen@1.10.15(@types/node@18.17.19)(typescript@5.2.2):
@@ -3551,7 +3556,7 @@ packages:
       dir-glob: 3.0.1
       fast-glob: 3.2.12
       glob: 7.2.3
-      ignore: 5.2.4
+      ignore: 5.3.1
       merge2: 1.4.1
       slash: 3.0.0
     dev: false
@@ -3563,7 +3568,7 @@ packages:
       array-union: 2.1.0
       dir-glob: 3.0.1
       fast-glob: 3.2.12
-      ignore: 5.2.4
+      ignore: 5.3.1
       merge2: 1.4.1
       slash: 3.0.0
     dev: false
@@ -3716,7 +3721,6 @@ packages:
   /ignore@5.3.1:
     resolution: {integrity: sha512-5Fytz/IraMjqpwfd34ke28PTVMjZjJG2MPn5t7OE4eUCUNf8BAa7b5WUS9/Qvr6mwOQS7Mk6vdsMno5he+T8Xw==}
     engines: {node: '>= 4'}
-    dev: true
 
   /import-fresh@3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
@@ -4353,20 +4357,6 @@ packages:
       next: 13.5.4(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-    dev: false
-
-  /next-cloudinary@6.5.2(next@13.5.4)(react@18.2.0):
-    resolution: {integrity: sha512-uY+isu853KY29Y8PNd07iTth0hlLayDZmR+O8GLUYBOOgj0ew/VCqW/lL9AoaBwIq5S8kASjk3wkbYNyg4tf4w==}
-    peerDependencies:
-      next: ^12 || ^13 || ^14
-      react: ^17 || ^18
-    dependencies:
-      '@cloudinary-util/types': 1.0.3
-      '@cloudinary-util/url-loader': 5.2.2
-      '@cloudinary-util/util': 3.0.0
-      '@tsconfig/recommended': 1.0.6
-      next: 13.5.4(react-dom@18.2.0)(react@18.2.0)
-      react: 18.2.0
     dev: false
 
   /next@13.5.4(react-dom@18.2.0)(react@18.2.0):
