@@ -10,7 +10,8 @@ cloudinary.config({
 
 export async function uploadToCloudinary(fileStr: string, folder?: string) {
   return cloudinary.uploader.upload(fileStr, {
-    folder: 'product_images'
+    ...(folder && { folder }),
+    format: 'avif',
   });
 }
 

@@ -1,13 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { uploadToCloudinary } from "@acme/utils";
 import { Product, ProductSchema } from "@acme/validators";
 
+import { PhotoUpload } from "~/components/photoUpload";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardFooter } from "~/components/ui/card";
 import {
@@ -19,52 +19,45 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-
-// import cloudinary from "~/utils/cloudinary";
-
-interface IFormInput extends Product {
-  imageUrl: FileList | null;
-}
+import { cn } from "~/lib/utils";
+import { convertArrayToFileList, convertToBase64 } from "~/utils/imageUtils";
 
 export const CreateProductForm = ({ onSubmitForm }) => {
+  const [mainImageIndex, setMainImageIndex] = useState<number | null>(null);
+
   const productForm = useForm<Product>({
     resolver: zodResolver(ProductSchema),
     defaultValues: {
       categoryId: 76,
-      // imageUrl: null,
+      images: [],
+      mainImageIndex: 0,
     },
   });
-  const fileRef = productForm.register("imageUrl");
 
   const onSubmit: SubmitHandler<Product> = async (data) => {
-    console.log("----- start form ----");
-    console.log(data);
-    console.log(data.imageUrl);
-    if (data.imageUrl && data.imageUrl.length > 0) {
-      const file = data.imageUrl[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = async () => {
-        try {
-          const base64data = reader.result;
-          const formData = {
-            ...data,
-            imageUrl: base64data, // Add the base64 image data to the formData
-          };
-
-          // Now send the complete formData including the image to your TRPC mutation
-          const newProduct = onSubmitForm(formData);
-          console.log("---- form submitted successfully ----", newProduct);
-        } catch (error) {
-          console.error("Failed during the form submission:", error);
-        }
-      };
+    console.log("Form data:", data.images);
+    let imageBase64Strings = [];
+    if (data.images.length > 0) {
+      imageBase64Strings = await Promise.all(
+        Array.from(data.images).map((file: File) => convertToBase64(file)),
+      );
     }
-    // Place to upload image to cloudinary
-    // const result = await cloudinary.uploader.upload(data.imageUrl);
-    // onSubmitForm(data);
-    console.log("---- end form---");
+
+    const formData = {
+      ...data,
+      images: imageBase64Strings,
+      mainImageIndex: 0,
+    };
+
+    console.log("Form data:", formData);
+    try {
+      const newProduct = await onSubmitForm(formData);
+    } catch (error) {
+      console.error("Failed during the form submission:", error);
+    }
   };
+
+  const fileInputRef = useRef(null);
 
   return (
     <Card>
@@ -116,24 +109,21 @@ export const CreateProductForm = ({ onSubmitForm }) => {
                 </FormItem>
               )}
             />
-
             <FormField
               control={productForm.control}
-              name="imageUrl"
+              name="images"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Image</FormLabel>
+                  <FormLabel>Zdjęcia</FormLabel>
                   <FormControl>
-                    <Input
-                      type="file"
-                      accept="image/*"
-                      multiple
-                      {...fileRef}
-                      onChange={(e) => {
-                        field.onChange(e.target.files);
-                      }}
+                    <PhotoUpload
+                      name={field.name}
+                      multiple={true}
+                      allowSelectMainImage={true}
+                      onMainImageIndexChange={setMainImageIndex}
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
