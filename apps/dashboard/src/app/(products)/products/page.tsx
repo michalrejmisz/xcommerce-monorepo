@@ -17,14 +17,22 @@ import { useCategoryNavigation } from "~/hooks/useCategoryNavigation";
 import { cn } from "~/lib/utils";
 import { api } from "~/utils/api";
 import { CreateProductForm } from "./_components/createProductForm";
+import { ProductsList } from "./_components/productsList";
 
 export default function ProductsPage() {
-  const { mutate: createProduct } = api.product.create.useMutation();
+  const ctx = api.useUtils();
+  const { data: productsData } = api.product.getAll.useQuery();
+  const { mutate: createProduct } = api.product.create.useMutation({
+    onSuccess: () => {
+      ctx.product.getAll.invalidate();
+    },
+  });
 
   return (
     <div>
       <div>Produkty</div>
       <CreateProductForm onSubmitForm={createProduct} />
+      <ProductsList products={productsData} />
     </div>
   );
 }

@@ -41,8 +41,18 @@ export const useCategoryNavigation = (allCategories: ProductCategory[] | undefin
         // Columns will automatically update via the useEffect above
     };
 
+    const getLastColumn = () => {
+        if (categoryColumns.length === 0) return [];
+        console.log("Category Columns: ", categoryColumns.length)
+        return categoryColumns[categoryColumns.length - 1];
+    };
+
+    const resetPath = () => {
+        setPath([]);
+    }
+
     console.log("Category Columns: ", categoryColumns)
     console.log("path: ", path)
 
-    return { path, categoryColumns, isDeletable, handleSelectCategory };
+    return { path, categoryColumns, isDeletable, handleSelectCategory, getLastColumn, resetPath };
 };

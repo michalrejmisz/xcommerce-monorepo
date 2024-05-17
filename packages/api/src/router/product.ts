@@ -38,6 +38,15 @@ export const productRouter = createTRPCRouter({
         console.error("Failed to upload images or create product:", error);
         throw new Error("Image upload or product creation failed");
       }
+      
     
+    }),
+
+    getAll: publicProcedure.query(({ ctx }) => {
+      return ctx.prisma.product.findMany({
+        include: {
+          category: true,
+        }
+      });
     }),
 });

@@ -21,6 +21,7 @@ import {
 import { Input } from "~/components/ui/input";
 import { cn } from "~/lib/utils";
 import { convertArrayToFileList, convertToBase64 } from "~/utils/imageUtils";
+import { CategoryList } from "./categoryList";
 
 export const CreateProductForm = ({ onSubmitForm }) => {
   const [mainImageIndex, setMainImageIndex] = useState<number | null>(null);
@@ -28,9 +29,9 @@ export const CreateProductForm = ({ onSubmitForm }) => {
   const productForm = useForm<Product>({
     resolver: zodResolver(ProductSchema),
     defaultValues: {
-      categoryId: 76,
       images: [],
       mainImageIndex: 0,
+      categoryId: "",
     },
   });
 
@@ -57,10 +58,15 @@ export const CreateProductForm = ({ onSubmitForm }) => {
     }
   };
 
-  const fileInputRef = useRef(null);
+  const handleCategoryChange = (categoryId) => {
+    productForm.setValue("categoryId", categoryId);
+  };
+
+  // const fileInputRef = useRef(null);
 
   return (
     <Card>
+      {/* <CategoryList /> */}
       <Form {...productForm}>
         <h1>Create Product Form</h1>
         <form onSubmit={productForm.handleSubmit(onSubmit)}>
@@ -69,12 +75,14 @@ export const CreateProductForm = ({ onSubmitForm }) => {
               control={productForm.control}
               name="name"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nazwa</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                </FormItem>
+                <Card className="bg-slate-600/20">
+                  <FormItem className="">
+                    <FormLabel>Nazwa</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                  </FormItem>
+                </Card>
               )}
             />
             <FormField
@@ -122,6 +130,19 @@ export const CreateProductForm = ({ onSubmitForm }) => {
                       allowSelectMainImage={true}
                       onMainImageIndexChange={setMainImageIndex}
                     />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={productForm.control}
+              name="categoryId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Kategoria</FormLabel>
+                  <FormControl>
+                    <CategoryList onCategoryChange={handleCategoryChange} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
