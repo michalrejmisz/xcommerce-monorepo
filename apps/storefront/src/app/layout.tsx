@@ -40,7 +40,9 @@ export default function Layout(props: { children: React.ReactNode }) {
     <html lang="en">
       <body className={["font-sans", fontSans.variable].join(" ")}>
         <TRPCReactProvider headers={headers()}>
-          {props.children}
+          <div className="sm:calc(100%-48px) md:calc(100%-48px) lg:calc(100%-48px) xl:calc(100%-64px) xl:max-w-1156 mx-auto w-full">
+            {props.children}
+          </div>
         </TRPCReactProvider>
       </body>
     </html>

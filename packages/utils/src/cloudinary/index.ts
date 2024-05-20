@@ -12,6 +12,7 @@ export async function uploadToCloudinary(fileStr: string, folder?: string) {
   return cloudinary.uploader.upload(fileStr, {
     ...(folder && { folder }),
     format: 'avif',
+    secure: true,
   });
 }
 

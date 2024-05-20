@@ -11,7 +11,7 @@ export const productRouter = createTRPCRouter({
         // Upload images to Cloudinary and get their URLs
         const imageUploadPromises = (input.images ?? []).map(async (file) => {
           const result = await uploadToCloudinary(file, "products");
-          return result.url;
+          return result.secure_url;
         });
         const uploadedImageUrls = await Promise.all(imageUploadPromises);
   
@@ -49,4 +49,18 @@ export const productRouter = createTRPCRouter({
         }
       });
     }),
+
+    getBySlug: publicProcedure.input(z.object({ slug: z.string() })).query(async ({ ctx, input }) => {
+      return ctx.prisma.product.findFirst({
+        where: {
+          id: Number(input.slug)
+        },
+        include: {
+          category: true,
+          specifications: true,
+          templates: true,
+          images: true
+        }
+      })}),
+  
 });
