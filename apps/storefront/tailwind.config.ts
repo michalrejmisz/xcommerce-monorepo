@@ -20,6 +20,12 @@ export default {
           100: 'rgb(110, 110, 110)',
           500: 'rgb(68, 68, 68)',
           600: 'rgb(26, 26, 26)',
+        },
+        green: {
+          DEFAULT: 'rgb(17, 158, 0)',
+          dark: 'rgb(0, 82, 0)',
+          darker: 'rgb(0, 125, 0)',
+          light: 'rgb(238, 247, 237)'
         }
       },
     },

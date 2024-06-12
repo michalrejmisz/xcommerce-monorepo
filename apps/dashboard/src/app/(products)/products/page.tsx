@@ -20,7 +20,7 @@ import { CreateProductForm } from "./_components/createProductForm";
 import { ProductsList } from "./_components/productsList";
 
 export default function ProductsPage() {
-  const ctx = api.useUtils();
+  // const ctx = api.useUtils();
   const { data: productsData } = api.product.getAll.useQuery();
   const { mutate: createProduct } = api.product.create.useMutation({
     onSuccess: () => {

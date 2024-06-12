@@ -4,8 +4,11 @@ import Image from "next/image";
 
 import "@acme/db";
 
+import { CheckCircledIcon } from "@radix-ui/react-icons";
+
 import { ProductImage } from "@acme/db";
 
+import { CircleApprove } from "~/components/ui/icons";
 import { api } from "~/utils/api";
 
 type ProductTitleProps = {
@@ -25,11 +28,67 @@ const ProductTitle: React.FC<ProductTitleProps> = ({ name, category }) => (
   </div>
 );
 
-const Buybox: React.FC = () => (
-  <div className="border-customGray-50 border-1 h-96 w-full rounded-lg border bg-white xl:w-72">
-    Test
-  </div>
-);
+const Buybox: React.FC = () => {
+  const descriptionMockup = [
+    {
+      icon: <CheckCircledIcon width="24" height="24" />,
+      firstLine: "Dostępny",
+      secondLine: "Dowiedz się więcej",
+    },
+    {
+      icon: <CheckCircledIcon width="24" height="24" />,
+      firstLine: "Kup teraz, otrzymasz pojutrze",
+      secondLine: "Dowiedz się więcej",
+    },
+    {
+      icon: <CheckCircledIcon width="24" height="24" />,
+      firstLine: "Darmowa dostawa",
+      secondLine: "Szczegóły Dostawy",
+    },
+    {
+      icon: <CheckCircledIcon width="24" height="24" />,
+      firstLine: "Rata tylko 14,68",
+      secondLine: "Oblicz ratę",
+    },
+    {
+      icon: <CheckCircledIcon width="24" height="24" />,
+      firstLine: "Dostepny w salonach",
+      secondLine: "Wybierz salon",
+    },
+  ];
+  return (
+    <div className="md:border-customGray-50 md:border-1 h-96 w-full rounded-lg border bg-white xl:w-72">
+      <div>
+        <span className="text-lg leading-6 md:text-[26px] md:leading-8">
+          2699,00 zł
+        </span>
+      </div>
+      <div className="flex flex-row pb-6 pt-4 md:px-4 md:pl-4 md:pt-3">
+        <div>1</div>
+        <button className="bg-green hover:bg-green-dark active:bg-green-darker h-10 w-full rounded-md px-2 py-2 text-white">
+          Dodaj do koszyka
+        </button>
+      </div>
+      {descriptionMockup.map((item) => (
+        <div className="flex flex-row">
+          <span className="flex w-14 shrink-0 text-center xl:w-12">
+            <span className="m-auto inline-block h-6 w-6 overflow-hidden">
+              {item.icon ?? "ikona"}
+            </span>
+          </span>
+          <div className="w-full border-t py-[10px]">
+            <span className="text-customGray-600 block text-sm">
+              {item.firstLine}
+            </span>
+            <span className="text-customGray-100 block text-xs">
+              {item.secondLine}
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 const DescriptionBox: React.FC = () => {
   const descriptionMockup = [
@@ -44,7 +103,7 @@ const DescriptionBox: React.FC = () => {
       <ul className="border-customGray-50 border-t pb-1 pt-3">
         {descriptionMockup.map((spec) => (
           <li key={spec.specification} className="pb-2">
-            <span className="text-customGray-100 mr-2 cursor-pointer text-xs underline">
+            <span className="text-customGray-100 mr-2 cursor-pointer text-xs underline decoration-dotted">
               {spec.specification}:
             </span>
             <span className="text-xs">{spec.description}</span>
