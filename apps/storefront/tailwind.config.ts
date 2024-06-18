@@ -15,19 +15,37 @@ export default {
         xxl: '1600px',
       },
       colors: {
-        customGray: {
-          50: 'rgb(221, 221, 221)',
-          100: 'rgb(110, 110, 110)',
-          500: 'rgb(68, 68, 68)',
-          600: 'rgb(26, 26, 26)',
+        gray: {
+          // hownameit?: 'rgb(242, 242, 242)',
+          // lightest: 'rgb(221, 221, 221)',
+          // light: 'rgb(110, 110, 110)',
+          // DEFAULT: 'rgb(68, 68, 68)',
+          // dark: 'rgb(26, 26, 26)',
+          '100': 'rgb(242, 242, 242)', // lightest
+          '200': 'rgb(221, 221, 221)',
+          '250': 'rgb(148, 148, 148)',
+          '300': 'rgb(110, 110, 110)',
+          '400': 'rgb(68, 68, 68)',
+          '500': 'rgb(26, 26, 26)',
         },
         green: {
-          DEFAULT: 'rgb(17, 158, 0)',
-          dark: 'rgb(0, 82, 0)',
-          darker: 'rgb(0, 125, 0)',
-          light: 'rgb(238, 247, 237)'
+          // DEFAULT: 'rgb(17, 158, 0)',
+          // dark: 'rgb(0, 82, 0)',
+          // darker: 'rgb(0, 125, 0)',
+          // light: 'rgb(238, 247, 237)'
+          '50': 'rgb(242, 242, 242)',
+          '100': 'rgb(238, 247, 237)',
+          '200': 'rgb(17, 158, 0)',
+          '300': 'rgb(0, 125, 0)',
+          '400': 'rgb(0, 82, 0)',
         }
       },
+    },
+    transitionTimingFunction: {
+      'custom-cubic': 'cubic-bezier(0.4, 0, 0.2, 1)',
+    },
+    transitionDuration: {
+      '300': '300ms',
     },
     maxWidth: {
       '1156': '1156px',
