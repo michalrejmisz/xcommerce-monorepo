@@ -3,5 +3,16 @@
     {
       "mode": "auto"
     }
-  ]
+  ],
+  "github.copilot.advanced": {
+    "editor.inlineSuggest.enabled": true
+  },
+  "github.copilot.suggestionCount": 20,
+  "github.copilot.enable": {
+    "*": true,
+    "javascript": false,
+    "python": false
+  },
+  "github.copilot.includeCompletionsWithSnippetText": true,
+  "github.copilot.includeCompletionsWithInsertText": true
 }

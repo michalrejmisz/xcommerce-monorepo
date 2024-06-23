@@ -7,7 +7,7 @@ const DescriptionBox: React.FC = () => {
   ];
 
   return (
-    <div className="min-w-[120px] flex-1 basis-0 pr-8 max-md:hidden md:max-xl:mt-3">
+    <div className="min-w-[120px] flex-1 basis-0 max-md:hidden md:max-xl:mt-3 xl:pr-8">
       <ul className="border-t border-gray-200 pb-1 pr-8 pt-3">
         {descriptionMockup.map((spec) => (
           <li key={spec.specification} className="pb-2">

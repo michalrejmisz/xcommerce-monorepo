@@ -1,4 +1,53 @@
+@font-face {
+  font-family: "Instrument Sans";
+  font-weight: 100 900; /* Zakres wag dostępnych w pliku zmiennym */
+  font-display: swap;
+  src: url("/fonts/InstrumentSans-VariableFont_wdth,wght.woff2") format("woff2");
+}
+
 @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
-  
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .underline-indicator {
+    @apply relative;
+  }
+
+  .underline-indicator::after {
+    content: "";
+    @apply absolute bottom-0 left-[-4px] right-[-4px] block h-0;
+    @apply border-l-4 border-r-4 border-transparent;
+    @apply border-b-0 border-transparent;
+    @apply transition-all duration-100 ease-[ease];
+  }
+
+  .underline-indicator-active::after {
+    @apply h-1 border-b-4 border-b-gray-500;
+  }
+
+  .separator {
+    @apply relative;
+  }
+
+  .separator::after {
+    content: "";
+    @apply absolute left-0 top-0 h-[2px] w-full;
+    background: linear-gradient(
+      to right,
+      theme(colors.gray.400) 0px,
+      theme(colors.gray.400) 50px,
+      theme(colors.gray.250) 50px,
+      theme(colors.gray.250) 100px,
+      theme(colors.gray.100) 100px
+    );
+  }
+
+  .separator-line {
+    @apply flex-grow border-t border-gray-300;
+  }
+
+  .separator-title {
+    @apply font-instrument relative mx-4 font-semibold text-gray-900;
+  }
+}

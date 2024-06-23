@@ -7,6 +7,12 @@ export default {
   presets: [baseConfig],
   theme: {
     extend: {
+      fontSize: {
+        '2xl' : ['1.5rem', '2rem'],
+      },
+      fontFamily: {
+        instrument: ['"Instrument Sans"', 'sans-serif'],
+      },
       screens: {
         sm: '520px',
         md: '720px',
@@ -41,11 +47,15 @@ export default {
         }
       },
     },
+    boxShadow: {
+      'custom-sm': 'rgba(0, 0, 0, 0.08) 0px 2px 4px 0px, rgba(0, 0, 0, 0.08) 0px 0px 2px 1px',
+    },
     transitionTimingFunction: {
       'custom-cubic': 'cubic-bezier(0.4, 0, 0.2, 1)',
     },
     transitionDuration: {
       '300': '300ms',
+      '100' : '100ms',
     },
     maxWidth: {
       '1156': '1156px',
